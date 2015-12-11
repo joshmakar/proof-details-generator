@@ -4,7 +4,7 @@ An Adobe Illustrator script that is used for generating art proof details and sw
 
 ## Installation
 
-To install, download the proofdetails.jsx to the scripts fold for Adobe Illustrator.  
+To install, extract the proofdetails.jsx to the scripts fold for Adobe Illustrator.  
 Ex: C:/Program Files(x86)/Adobe/[Adobe Illustrator Folder]/Presets/en_US/Scripts
 
 ## Usage
@@ -19,4 +19,4 @@ v1.0: Initial repository setup.
 
 General code written by Josh Makar *www.joshmakar.com*.
 
-*Swatch generation function borrowed and modified from __John Wundes ( john@wundes.com ) www.wundes.com__.*
+*Swatch generation function __renderSwatchLegend.jsx__ borrowed from __John Wundes ( john@wundes.com ) www.wundes.com__.*
