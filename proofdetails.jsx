@@ -5,7 +5,6 @@
 
 doc = activeDocument;
 
-//doc.layers[0].locked= false;
 var newGroup = doc.layers.add(); //var newGroup = doc.groupItems.add();
 newGroup.name = "Proof Details";
 newGroup.move( doc, ElementPlacement.PLACEATBEGINNING );
@@ -54,6 +53,7 @@ function createSwatches(){
             rgbColor = swatches[c].color;
             rectRef.fillColor = rgbColor;
             rectRef.strokeColor = black;
+            rectRef.strokeWidth = "1";
             textRectRef =  doc.pathItems.rectangle(y- t_v_pad,x+ t_h_pad, w-(2*t_h_pad),h-(2*t_v_pad));
             textRef = doc.textFrames.areaText(textRectRef);
             textRef.textRange.characterAttributes.size = 8;
@@ -180,15 +180,17 @@ function outputProductionDetails(){
 
     switch (productionTypeKey) {
       case "scr":
-        textRef = doc.textFrames.areaText(doc.pathItems.rectangle(y, x, w, h));
+        textRef = doc.textFrames.add();
         textRef.textRange.characterAttributes.size = 10;
+        textRef.position = [x, y];
         textRef.contents = "Screen-Printing";
         textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
 
         while(p < 4 && n == true){
             position[p] = prompt("What is the Print Position","Full Front, Full Back, Left Chest, Etc.");
 
-            textRef = doc.textFrames.areaText(doc.pathItems.rectangle(y - (h + margin), x + (w * p), w, h * 2));
+            rectRef = doc.pathItems.rectangle(y - (h + margin), x + (w * p), w, h * 2)
+            textRef = doc.textFrames.areaText(rectRef);
             textRef.textRange.characterAttributes.size = 10;
             textRef.contents = toTitleCase(position[p]) + '\rTBD"w x TBD"h';
             textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
@@ -204,17 +206,16 @@ function outputProductionDetails(){
         var productWidth = prompt("What is the Product Width",'6\', 24", Etc.');
         var productHeight = prompt("What is the Product Height",'3\', 18", Etc.');
 
-        textRectRefProductionType =  doc.pathItems.rectangle(y, x, w, h);
-        textRefProductionType = doc.textFrames.areaText(textRectRefProductionType);
-        textRefProductionType.textRange.characterAttributes.size = 10;
-        textRefProductionType.contents = "Digital Printing";
-        textRefProductionType.move( newGroup, ElementPlacement.PLACEATBEGINNING );
+        textRef = doc.textFrames.add();
+        textRef.textRange.characterAttributes.size = 10;
+        textRef.position = [x, y];
+        textRef.contents = "Digital Printing";
 
-        textRectRefproductName =  doc.pathItems.rectangle(y - (h + margin), x, w, h * 2);
-        textRefproductName = doc.textFrames.areaText(textRectRefproductName);
-        textRefproductName.textRange.characterAttributes.size = 10;
-        textRefproductName.contents = toTitleCase(productName) + '\r' + productWidth + 'w x ' + productHeight + 'h';
-        textRefproductName.move( newGroup, ElementPlacement.PLACEATBEGINNING );
+        textRef = doc.textFrames.add();
+        textRef.textRange.characterAttributes.size = 10;
+        textRef.position = [x, y - (h + margin)];
+        textRef.contents = toTitleCase(productName) + '\r' + productWidth + 'w x ' + productHeight + 'h';
+        textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
         break;
       case "emb":
         var productName = prompt("What is the Product Type?","Polos, Hats, Etc.");
@@ -239,6 +240,12 @@ function outputProductionDetails(){
         break;
       case "hea":
                 textRefProductionType.textRange.characterAttributes.size = 10;
+        break;
+      case "hid":
+        textRef = doc.textFrames.add();
+        textRef.textRange.characterAttributes.size = 10;
+        textRef.position = [200,200];
+        textRef.contents = "Screen-Printing";
         break;
       default:
         textRectRefProductionType =  doc.pathItems.rectangle(y, x, w, h);
