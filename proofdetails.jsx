@@ -39,7 +39,7 @@ function createSwatches(){
 
     textRef = doc.textFrames.areaText(doc.pathItems.rectangle(-700, 30, 50, 30));
     textRef.textRange.characterAttributes.size = 10;
-    textRef.contents = "Ink Colors Used";
+    textRef.contents = "Colors \rUsed";
     textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
 
     for(var c=2,len=swatches.length;c<len && c<9;c++)
@@ -163,7 +163,6 @@ function createSwatches(){
 }
 
 function outputProductionDetails(){
-
     var productionType = prompt("What is the production type?","Screen-Print, Embroidery, Digital, Heatpress, Vinyl, or Other");
     var productionTypeKey = productionType.toLowerCase();
     var productionTypeKey = productionTypeKey.substring(0, 3);
@@ -178,87 +177,98 @@ function outputProductionDetails(){
     h = 10;
     margin = 5;
 
+    var pointTextRef = function(x, y, contents){
+        TextRef = doc.textFrames.add();
+        TextRef.textRange.characterAttributes.size = 10;
+        TextRef.position = [x, y];
+        TextRef.contents = contents;
+    }
+
     switch (productionTypeKey) {
-      case "scr":
-        textRef = doc.textFrames.add();
-        textRef.textRange.characterAttributes.size = 10;
-        textRef.position = [x, y];
-        textRef.contents = "Screen-Printing";
-        textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
+        case "scr":
+            pointTextRef(x, y, "Screen-Print");
 
-        while(p < 4 && n == true){
-            position[p] = prompt("What is the Print Position","Full Front, Full Back, Left Chest, Etc.");
+            while(p < 4 && n == true){
+                position[p] = prompt("What is the Print Position","Full Front, Full Back, Left Chest, Etc.");
 
-            rectRef = doc.pathItems.rectangle(y - (h + margin), x + (w * p), w, h * 2)
-            textRef = doc.textFrames.areaText(rectRef);
-            textRef.textRange.characterAttributes.size = 10;
-            textRef.contents = toTitleCase(position[p]) + '\rTBD"w x TBD"h';
-            textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
+                pointTextRef(x + (w * p), y - (h + margin), toTitleCase(position[p]) + '\rTBD"w x TBD"h');
 
-            p++;
-            n = confirm('Add another position?');
-        }
+                p++;
 
-        createSwatches();
-        break;
-      case "dig":
-        var productName = prompt("What is the Product Name?","Banner, Yard Sign, A-Frame, Etc.");
-        var productWidth = prompt("What is the Product Width",'6\', 24", Etc.');
-        var productHeight = prompt("What is the Product Height",'3\', 18", Etc.');
+                if(p < 4){
+                    n = confirm('Add another position?');
+                }
+            }
 
-        textRef = doc.textFrames.add();
-        textRef.textRange.characterAttributes.size = 10;
-        textRef.position = [x, y];
-        textRef.contents = "Digital Printing";
+            createSwatches();
+            
+            break;
+      
+        case "dig":
+            var productName = prompt("What is the Product Name?","Banner, Yard Sign, A-Frame, Etc.");
+            var productWidth = prompt("What is the Product Width",'6\', 24", Etc.');
+            var productHeight = prompt("What is the Product Height",'3\', 18", Etc.');
 
-        textRef = doc.textFrames.add();
-        textRef.textRange.characterAttributes.size = 10;
-        textRef.position = [x, y - (h + margin)];
-        textRef.contents = toTitleCase(productName) + '\r' + productWidth + 'w x ' + productHeight + 'h';
-        textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
-        break;
-      case "emb":
-        var productName = prompt("What is the Product Type?","Polos, Hats, Etc.");
+            pointTextRef(x, y, "Digital Printing");
 
-        textRectRefProductionType =  doc.pathItems.rectangle(y, x, w, h);
-        textRefProductionType = doc.textFrames.areaText(textRectRefProductionType);
-        textRefProductionType.textRange.characterAttributes.size = 10;
-        textRefProductionType.contents = "Embroidery";
-        textRefProductionType.move( newGroup, ElementPlacement.PLACEATBEGINNING );
+            pointTextRef(x, y - (h + margin), toTitleCase(productName) + '\r' + productWidth + 'w x ' + productHeight + 'h');
 
-        while(p < 4 && n == true){
-          position[p] = prompt("What is the Embroidery Position","Left Chest, Right Chest, Center Front, Etc.");
+            break;
 
-          textRef = doc.textFrames.areaText(doc.pathItems.rectangle(y - (h + margin), x + (w * p), w, h * 2));
-          textRef.textRange.characterAttributes.size = 10;
-          textRef.contents = toTitleCase(position[p]) + '\rTBD"w x TBD"h';
-          textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
+        case "emb":
+            var productName = prompt("What is the Product Type?","Polos, Hats, Etc.");
 
-          p++;
-          n = confirm('Add another position?');
-        }
-        break;
-      case "hea":
-                textRefProductionType.textRange.characterAttributes.size = 10;
-        break;
-      case "hid":
-        textRef = doc.textFrames.add();
-        textRef.textRange.characterAttributes.size = 10;
-        textRef.position = [200,200];
-        textRef.contents = "Screen-Printing";
-        break;
-      default:
-        textRectRefProductionType =  doc.pathItems.rectangle(y, x, w, h);
-        textRefProductionType = doc.textFrames.areaText(textRectRefProductionType);
-        textRefProductionType.textRange.characterAttributes.size = 10;
-        textRefProductionType.contents = toTitleCase(productionType);
-        textRefProductionType.move( newGroup, ElementPlacement.PLACEATBEGINNING );
+            pointTextRef(x, y, "Embroidery");
 
-        textRectRefproductName =  doc.pathItems.rectangle(y - (h + margin), x, w, h * 2);
-        textRefproductName = doc.textFrames.areaText(textRectRefproductName);
-        textRefproductName.textRange.characterAttributes.size = 10;
-        textRefproductName.contents = "Product" + '\rTBD"w x TBD"h';
-        textRefproductName.move( newGroup, ElementPlacement.PLACEATBEGINNING );
+            while(p < 4 && n == true){
+              position[p] = prompt("What is the Embroidery Position","Left Chest, Right Chest, Center Front, Etc.");
+
+              pointTextRef(x + (w * p), y - (h + margin), toTitleCase(position[p]) + '\rTBD"w x TBD"h');
+
+              p++;
+              
+              if(p < 4){
+                  n = confirm('Add another position?');
+              }
+
+            }
+
+            break;
+
+        case "hea":
+            var productName = prompt("What is the Product Type?","Shirts, Cinch Bags, Etc.");
+
+            pointTextRef(x, y, "Heatpress");
+
+            while(p < 4 && n == true){
+              position[p] = prompt("What is the Heatpress Position","Left Chest, Full Back, Right Sleeve, Etc.");
+
+              pointTextRef(x + (w * p), y - (h + margin), toTitleCase(position[p]) + '\rTBD"w x TBD"h');
+
+              p++;
+              
+              if(p < 4){
+                  n = confirm('Add another position?');
+              }
+
+            }
+
+            break;
+
+        case "vin":
+            var productWidth = prompt("What is the Product Width",'6", 24", Etc.');
+            var productHeight = prompt("What is the Product Height",'3", 18", Etc.');
+
+            pointTextRef(x, y, "Cut Vinyl");
+
+            pointTextRef(x, y - (h + margin), productWidth + 'w x ' + productHeight + 'h');
+
+            break;
+
+        default:
+            pointTextRef(x, y, toTitleCase(productionType));
+
+            pointTextRef(x, y - (h + margin), "Product" + '\rTBD"w x TBD"h');
     }
 }
 
