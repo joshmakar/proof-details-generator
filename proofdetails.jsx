@@ -186,7 +186,12 @@ function outputProductionDetails(){
 
     switch (productionTypeKey) {
         case "scr":
-            pointTextRef(x, y, "Screen-Print");
+        	contents = "Screen-Print";
+        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
+            TextRef.fillColor = white;
+            TextRef.strokeColor = white;
+            TextRef.strokeWidth = "0";
+            pointTextRef(x, y, contents);
 
             while(p < 4 && n == true){
                 position[p] = prompt("What is the Print Position","Full Front, Full Back, Left Chest, Etc.");
@@ -209,7 +214,12 @@ function outputProductionDetails(){
             var productWidth = prompt("What is the Product Width",'6\', 24", Etc.');
             var productHeight = prompt("What is the Product Height",'3\', 18", Etc.');
 
-            pointTextRef(x, y, "Digital Printing");
+            contents = "Digital Printing";
+        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
+            TextRef.fillColor = white;
+            TextRef.strokeColor = white;
+            TextRef.strokeWidth = "0";
+            pointTextRef(x, y, contents);
 
             pointTextRef(x, y - (h + margin), toTitleCase(productName) + '\r' + productWidth + 'w x ' + productHeight + 'h');
 
@@ -218,7 +228,12 @@ function outputProductionDetails(){
         case "emb":
             var productName = prompt("What is the Product Type?","Polos, Hats, Etc.");
 
-            pointTextRef(x, y, "Embroidery");
+            contents = "Embroidery";
+        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
+            TextRef.fillColor = white;
+            TextRef.strokeColor = white;
+            TextRef.strokeWidth = "0";
+            pointTextRef(x, y, contents);
 
             while(p < 4 && n == true){
               position[p] = prompt("What is the Embroidery Position","Left Chest, Right Chest, Center Front, Etc.");
@@ -238,7 +253,12 @@ function outputProductionDetails(){
         case "hea":
             var productName = prompt("What is the Product Type?","Shirts, Cinch Bags, Etc.");
 
-            pointTextRef(x, y, "Heatpress");
+            contents = "Heatpress";
+        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
+            TextRef.fillColor = white;
+            TextRef.strokeColor = white;
+            TextRef.strokeWidth = "0";
+            pointTextRef(x, y, contents);
 
             while(p < 4 && n == true){
               position[p] = prompt("What is the Heatpress Position","Left Chest, Full Back, Right Sleeve, Etc.");
@@ -259,14 +279,24 @@ function outputProductionDetails(){
             var productWidth = prompt("What is the Product Width",'6", 24", Etc.');
             var productHeight = prompt("What is the Product Height",'3", 18", Etc.');
 
-            pointTextRef(x, y, "Cut Vinyl");
+            contents = "Cut Vinyl";
+        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
+            TextRef.fillColor = white;
+            TextRef.strokeColor = white;
+            TextRef.strokeWidth = "0";
+            pointTextRef(x, y, contents);
 
             pointTextRef(x, y - (h + margin), productWidth + 'w x ' + productHeight + 'h');
 
             break;
 
         default:
-            pointTextRef(x, y, toTitleCase(productionType));
+            contents = toTitleCase(productionType);
+        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
+            TextRef.fillColor = white;
+            TextRef.strokeColor = white;
+            TextRef.strokeWidth = "0";
+            pointTextRef(x, y, contents);
 
             pointTextRef(x, y - (h + margin), "Product" + '\rTBD"w x TBD"h');
     }
