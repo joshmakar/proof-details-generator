@@ -216,9 +216,9 @@ function outputProductionDetails(){
     var h = 10;
     var margin = 5;
 
-    var white = new GrayColor()
-    var noColor = new NoColor();
-    var white.gray = 0;
+    white = new GrayColor();
+    noColor = new NoColor();
+    white.gray = 0;
 
     var pointTextRef = function(x, y, contents){
         TextRef = doc.textFrames.add();
@@ -228,10 +228,10 @@ function outputProductionDetails(){
     }
 
 	var productionTypeBG = function(){
-		TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
-	    TextRef.fillColor = white;
-	    TextRef.strokeColor = noColor;
-	    TextRef.strokeWidth = "0";
+        whiteBox = doc.pathItems.rectangle(y,x - 2, contents.length * 4.75,h);
+        whiteBox.fillColor = white;
+        whiteBox.strokeColor = noColor;
+        whiteBox.strokeWidth = "0";
 	}
 
 	if(productionTypeKey != "/he"){
