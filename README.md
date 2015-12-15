@@ -4,7 +4,7 @@ An Adobe Illustrator script that is used for generating art proof details and sw
 
 ## Installation
 
-To install, extract the proofdetails.jsx to the scripts fold for Adobe Illustrator.  
+To install, extract the proofdetails.jsx to the scripts folder for Adobe Illustrator.  
 Ex: C:/Program Files(x86)/Adobe/[Adobe Illustrator Folder]/Presets/en_US/Scripts
 
 ## Usage
