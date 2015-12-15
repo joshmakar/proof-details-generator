@@ -1,16 +1,55 @@
 ﻿/////////////////////////////////////////////////////////////////
-// Render Proof Details V1.0 CS5
+// Proof Details Generator V1.0 CS5
 //---------------------------------------------------------------
 /////////////////////////////////////////////////////////////////
 
+//Global Variables
 doc = activeDocument;
-
-var newGroup = doc.layers.add(); //var newGroup = doc.groupItems.add();
-newGroup.name = "Proof Details";
-newGroup.move( doc, ElementPlacement.PLACEATBEGINNING );
 
 function toTitleCase(str){
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
+
+function launchHelp(){
+  var helpTopic = prompt("Help info: | About | Embroidery | Screen-Print | Update | Exit", "");
+  var helpTopicKey = helpTopic.toLowerCase();
+
+  switch(helpTopicKey){
+    case "about":
+      alert("Proof Details Generator was written by Josh Makar, 2015.\rTo report any issues, bugs, or to suggest improvements, send an email to joshmakar@gmail.com");
+
+      launchHelp();
+
+      break;
+
+    case "embroidery":
+      alert("The Embroidery option will output the proof details for embroidery including positions and embelishment sizes.");
+
+      launchHelp();
+
+      break;
+
+    case "screen-print":
+      alert("The Screen-Print option will output the proof details for screen-printing including positions, imprint sizes, and ink colors used.\rThe ink colors used will automatically be generated based off of the swatches in your swatch pallet.");
+
+      launchHelp();
+
+      break;
+
+    case "update":
+      alert("To ensure Proof Details Generator is up-to-date, visit:\rhttp://github.com/joshmakar/proof-details-generator");
+
+      launchHelp();
+
+      break;
+
+    case "exit":
+      break;
+
+    default:
+      alert("Please type a valid response or type 'exit'.");
+      launchHelp();
+  }
 }
 
 function createSwatches(){
@@ -163,7 +202,7 @@ function createSwatches(){
 }
 
 function outputProductionDetails(){
-    var productionType = prompt("What is the production type?","Screen-Print, Embroidery, Digital, Heatpress, Vinyl, or Other");
+    var productionType = prompt("What is the production type? Or type /help","Screen-Print, Embroidery, Digital, Heatpress, Vinyl, or Other");
     var productionTypeKey = productionType.toLowerCase();
     var productionTypeKey = productionTypeKey.substring(0, 3);
 
@@ -171,11 +210,15 @@ function outputProductionDetails(){
     var n = true;
     var position = [];
 
-    y = -640;
-    x = 30;
-    w = 100;
-    h = 10;
-    margin = 5;
+    var y = -640;
+    var x = 30;
+    var w = 100;
+    var h = 10;
+    var margin = 5;
+
+    var white = new GrayColor()
+    var noColor = new NoColor();
+    var white.gray = 0;
 
     var pointTextRef = function(x, y, contents){
         TextRef = doc.textFrames.add();
@@ -184,13 +227,23 @@ function outputProductionDetails(){
         TextRef.contents = contents;
     }
 
+	var productionTypeBG = function(){
+		TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
+	    TextRef.fillColor = white;
+	    TextRef.strokeColor = noColor;
+	    TextRef.strokeWidth = "0";
+	}
+
+	if(productionTypeKey != "/he"){
+		newGroup = doc.layers.add(); //var newGroup = doc.groupItems.add();
+		newGroup.name = "Proof Details";
+	}
+
     switch (productionTypeKey) {
         case "scr":
         	contents = "Screen-Print";
-        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
-            TextRef.fillColor = white;
-            TextRef.strokeColor = white;
-            TextRef.strokeWidth = "0";
+        	productionTypeBG();
+
             pointTextRef(x, y, contents);
 
             while(p < 4 && n == true){
@@ -215,10 +268,8 @@ function outputProductionDetails(){
             var productHeight = prompt("What is the Product Height",'3\', 18", Etc.');
 
             contents = "Digital Printing";
-        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
-            TextRef.fillColor = white;
-            TextRef.strokeColor = white;
-            TextRef.strokeWidth = "0";
+        	productionTypeBG();
+
             pointTextRef(x, y, contents);
 
             pointTextRef(x, y - (h + margin), toTitleCase(productName) + '\r' + productWidth + 'w x ' + productHeight + 'h');
@@ -229,10 +280,8 @@ function outputProductionDetails(){
             var productName = prompt("What is the Product Type?","Polos, Hats, Etc.");
 
             contents = "Embroidery";
-        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
-            TextRef.fillColor = white;
-            TextRef.strokeColor = white;
-            TextRef.strokeWidth = "0";
+        	productionTypeBG();
+
             pointTextRef(x, y, contents);
 
             while(p < 4 && n == true){
@@ -254,10 +303,8 @@ function outputProductionDetails(){
             var productName = prompt("What is the Product Type?","Shirts, Cinch Bags, Etc.");
 
             contents = "Heatpress";
-        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
-            TextRef.fillColor = white;
-            TextRef.strokeColor = white;
-            TextRef.strokeWidth = "0";
+        	productionTypeBG();
+
             pointTextRef(x, y, contents);
 
             while(p < 4 && n == true){
@@ -280,22 +327,23 @@ function outputProductionDetails(){
             var productHeight = prompt("What is the Product Height",'3", 18", Etc.');
 
             contents = "Cut Vinyl";
-        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
-            TextRef.fillColor = white;
-            TextRef.strokeColor = white;
-            TextRef.strokeWidth = "0";
+        	productionTypeBG();
+
             pointTextRef(x, y, contents);
 
             pointTextRef(x, y - (h + margin), productWidth + 'w x ' + productHeight + 'h');
 
             break;
 
+        case "/he":
+          launchHelp();
+
+          break;
+
         default:
             contents = toTitleCase(productionType);
-        	TextRef = doc.pathItems.rectangle(y,x - 2, contents.length * 5.5,h);
-            TextRef.fillColor = white;
-            TextRef.strokeColor = white;
-            TextRef.strokeWidth = "0";
+        	productionTypeBG();
+
             pointTextRef(x, y, contents);
 
             pointTextRef(x, y - (h + margin), "Product" + '\rTBD"w x TBD"h');
