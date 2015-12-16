@@ -6,31 +6,33 @@
 //Global Variables
 doc = activeDocument;
 
+var myfont = "DroidSansMono";
+
 function toTitleCase(str){
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
 function launchHelp(){
-  var helpTopic = prompt("Help info: | About | Embroidery | Screen-Print | Update | Exit", "");
+  var helpTopic = prompt("Help info: | Production Types | Tips | Update | Exit", "");
   var helpTopicKey = helpTopic.toLowerCase();
 
   switch(helpTopicKey){
     case "about":
-      alert("Proof Details Generator was written by Josh Makar, 2015.\rTo report any issues, bugs, or to suggest improvements, send an email to joshmakar@gmail.com");
+      alert("The Proof Details Generator was written by Josh Makar, 2015.\rTo report any issues, bugs, or to suggest improvements, send an email to joshmakar@gmail.com");
 
       launchHelp();
 
       break;
 
-    case "embroidery":
-      alert("The Embroidery option will output the proof details for embroidery including positions and embelishment sizes.");
+    case "production types":
+      alert("The Production Type is the type of printing, embroidery, or other embelishment. Each different production type will output a specific set of details elements including imprint sizes, ink colors, and product names.");
 
       launchHelp();
 
       break;
 
-    case "screen-print":
-      alert("The Screen-Print option will output the proof details for screen-printing including positions, imprint sizes, and ink colors used.\rThe ink colors used will automatically be generated based off of the swatches in your swatch pallet.");
+    case "tips":
+      alert("You only need to type the first three characters of the standard production types. If you'd like to output the swatch colors only, just type 'colors'.");
 
       launchHelp();
 
@@ -78,6 +80,7 @@ function createSwatches(){
 
     textRef = doc.textFrames.areaText(doc.pathItems.rectangle(-700, 30, 50, 30));
     textRef.textRange.characterAttributes.size = 10;
+    TextRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfont);
     textRef.contents = "Colors \rUsed";
     textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
 
@@ -222,13 +225,14 @@ function outputProductionDetails(){
 
     var pointTextRef = function(x, y, contents){
         TextRef = doc.textFrames.add();
+        TextRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfont);
         TextRef.textRange.characterAttributes.size = 10;
         TextRef.position = [x, y];
         TextRef.contents = contents;
     }
 
 	var productionTypeBG = function(){
-        whiteBox = doc.pathItems.rectangle(y,x - 2, contents.length * 4.75,h);
+        whiteBox = doc.pathItems.rectangle(y,x - 2, contents.length * 5.876 + 6,h);
         whiteBox.fillColor = white;
         whiteBox.strokeColor = noColor;
         whiteBox.strokeWidth = "0";
@@ -241,8 +245,8 @@ function outputProductionDetails(){
 
     switch (productionTypeKey) {
         case "scr":
-        	contents = "Screen-Print";
-        	productionTypeBG();
+          	contents = "Screen-Print";
+          	productionTypeBG();
 
             pointTextRef(x, y, contents);
 
@@ -334,6 +338,13 @@ function outputProductionDetails(){
             pointTextRef(x, y - (h + margin), productWidth + 'w x ' + productHeight + 'h');
 
             break;
+
+        case "col":
+
+          TextRef = doc.textFrames.add();
+          createSwatches();
+
+          break;
 
         case "/he":
           launchHelp();
