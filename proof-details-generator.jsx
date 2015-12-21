@@ -5,8 +5,8 @@
 
 //Global Variables
 doc = activeDocument;
-
-var myfont = "DroidSansMono";
+var myfont = "DroidSans";
+var myfontMono = "DroidSansMono";
 
 function toTitleCase(str){
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
@@ -80,8 +80,11 @@ function createSwatches(){
 
     textRef = doc.textFrames.areaText(doc.pathItems.rectangle(-700, 30, 50, 30));
     textRef.textRange.characterAttributes.size = 10;
-    TextRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfont);
-    textRef.contents = "Colors \rUsed";
+    try{
+      textRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfont);
+    }
+    catch(e){alert("Please install the Google font: " + myfont)}
+    textRef.contents = "Colors\rUsed";
     textRef.move( newGroup, ElementPlacement.PLACEATBEGINNING );
 
     for(var c=2,len=swatches.length;c<len && c<9;c++)
@@ -99,6 +102,10 @@ function createSwatches(){
             textRectRef =  doc.pathItems.rectangle(y- t_v_pad,x+ t_h_pad, w-(2*t_h_pad),h-(2*t_v_pad));
             textRef = doc.textFrames.areaText(textRectRef);
             textRef.textRange.characterAttributes.size = 8;
+            try{
+              textRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfont);
+            }
+            catch(e){alert("Please install the Google font: " + myfont)}
             textRef.contents = swatches[c].name;
             textRef.textRange.fillColor = is_dark(swatches[c].color)? white : black;
             //
@@ -225,7 +232,21 @@ function outputProductionDetails(){
 
     var pointTextRef = function(x, y, contents){
         TextRef = doc.textFrames.add();
-        TextRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfont);
+        try{  
+          TextRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfont);  
+        }  
+        catch(e){alert("Please install the Google font: " + myfont)} 
+        TextRef.textRange.characterAttributes.size = 10;
+        TextRef.position = [x, y];
+        TextRef.contents = contents;
+    }
+
+    var pointTextRefMono = function(x, y, contents){
+        TextRef = doc.textFrames.add();
+        try{
+          TextRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfontMono);
+        }
+        catch(e){alert("Please install the Google font: " + myfontMono)}
         TextRef.textRange.characterAttributes.size = 10;
         TextRef.position = [x, y];
         TextRef.contents = contents;
@@ -238,7 +259,11 @@ function outputProductionDetails(){
         whiteBox.strokeWidth = "0";
 	}
 
-	if(productionTypeKey != "/he"){
+	if(productionTypeKey != "/he" && productionTypeKey != "/re"){
+    try {  
+        doc.layers.getByName( 'Proof Details' ).remove();  
+    } catch (e) {};
+
 		newGroup = doc.layers.add(); //var newGroup = doc.groupItems.add();
 		newGroup.name = "Proof Details";
 	}
@@ -248,7 +273,7 @@ function outputProductionDetails(){
           	contents = "Screen-Print";
           	productionTypeBG();
 
-            pointTextRef(x, y, contents);
+            pointTextRefMono(x, y, contents);
 
             while(p < 4 && n == true){
                 position[p] = prompt("What is the Print Position","Full Front, Full Back, Left Chest, Etc.");
@@ -274,7 +299,7 @@ function outputProductionDetails(){
             contents = "Digital Printing";
         	productionTypeBG();
 
-            pointTextRef(x, y, contents);
+            pointTextRefMono(x, y, contents);
 
             pointTextRef(x, y - (h + margin), toTitleCase(productName) + '\r' + productWidth + 'w x ' + productHeight + 'h');
 
@@ -286,7 +311,7 @@ function outputProductionDetails(){
             contents = "Embroidery";
         	productionTypeBG();
 
-            pointTextRef(x, y, contents);
+            pointTextRefMono(x, y, contents);
 
             while(p < 4 && n == true){
               position[p] = prompt("What is the Embroidery Position","Left Chest, Right Chest, Center Front, Etc.");
@@ -309,7 +334,7 @@ function outputProductionDetails(){
             contents = "Heatpress";
         	productionTypeBG();
 
-            pointTextRef(x, y, contents);
+            pointTextRefMono(x, y, contents);
 
             while(p < 4 && n == true){
               position[p] = prompt("What is the Heatpress Position","Left Chest, Full Back, Right Sleeve, Etc.");
@@ -333,7 +358,7 @@ function outputProductionDetails(){
             contents = "Cut Vinyl";
         	productionTypeBG();
 
-            pointTextRef(x, y, contents);
+            pointTextRefMono(x, y, contents);
 
             pointTextRef(x, y - (h + margin), productWidth + 'w x ' + productHeight + 'h');
 
@@ -341,6 +366,8 @@ function outputProductionDetails(){
 
         case "col":
 
+          newGroup = doc.layers.add(); //var newGroup = doc.groupItems.add();
+          newGroup.name = "Proof Details";
           TextRef = doc.textFrames.add();
           createSwatches();
 
@@ -351,11 +378,18 @@ function outputProductionDetails(){
 
           break;
 
+        case "/re":
+          try {  
+              doc.layers.getByName( 'Proof Details' ).remove();  
+          } catch (e) {};
+
+          break;
+
         default:
             contents = toTitleCase(productionType);
         	productionTypeBG();
 
-            pointTextRef(x, y, contents);
+            pointTextRefMono(x, y, contents);
 
             pointTextRef(x, y - (h + margin), "Product" + '\rTBD"w x TBD"h');
     }
