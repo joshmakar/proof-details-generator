@@ -14,10 +14,11 @@ Create your design proof then run the script and follow the prompts.
 ## History
 
 v1.1:
->Cleaned up known errors.
->All items on To-Do list completed.
+>- Cleaned up known errors.
+>- All items on To-Do list completed.
 
-v1.0: Initial repository setup.
+v1.0:
+>- Initial repository setup.
 
 ## To-do
 
