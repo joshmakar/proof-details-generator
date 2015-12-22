@@ -1,56 +1,63 @@
 ﻿/////////////////////////////////////////////////////////////////
-// Proof Details Generator V1.0 CS5
+//  Proof Details Generator V1.1 CS5
+    var PDGVersion = "V1.1";
 //---------------------------------------------------------------
 /////////////////////////////////////////////////////////////////
 
 //Global Variables
 doc = activeDocument;
-var myfont = "DroidSans";
-var myfontMono = "DroidSansMono";
+myfont = "DroidSans";
+myfontMono = "DroidSansMono";
 
 function toTitleCase(str){
     return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
 function launchHelp(){
-  var helpTopic = prompt("Help info: | Production Types | Tips | Update | Exit", "");
-  var helpTopicKey = helpTopic.toLowerCase();
+  var helpTopic = "";
+  var helpTopic = prompt("Help info:\rAbout | Production Type | Tips | Update | Exit", "");
+  if(helpTopic == null){
+    outputProductionDetails();
+  } else {
 
-  switch(helpTopicKey){
-    case "about":
-      alert("The Proof Details Generator was written by Josh Makar, 2015.\rTo report any issues, bugs, or to suggest improvements, send an email to joshmakar@gmail.com");
+    var helpTopicKey = helpTopic.toLowerCase();
 
-      launchHelp();
+    switch(helpTopicKey){
+      case "about":
+        alert("Proof Details Generator " + PDGVersion + ". written by Josh Makar, 2015.\rTo report any issues, bugs, or to suggest improvements, send an email to joshmakar@gmail.com");
 
-      break;
+        launchHelp();
 
-    case "production types":
-      alert("The Production Type is the type of printing, embroidery, or other embelishment. Each different production type will output a specific set of details elements including imprint sizes, ink colors, and product names.");
+        break;
 
-      launchHelp();
+      case "production type":
+        alert("The Production Type is the type of printing, embroidery, or other embelishment. Each different production type will output a specific set of details including imprint sizes, ink colors, and product names.");
 
-      break;
+        launchHelp();
 
-    case "tips":
-      alert("You only need to type the first three characters of the standard production types. If you'd like to output the swatch colors only, just type 'colors'.");
+        break;
 
-      launchHelp();
+      case "tips":
+        alert("You only need to type the first three characters of the default Production Type, e.g. scr = Screen-Print.\r\rIf you'd like to output the swatch colors only, type 'colors'.");
 
-      break;
+        launchHelp();
 
-    case "update":
-      alert("To ensure Proof Details Generator is up-to-date, visit:\rhttp://github.com/joshmakar/proof-details-generator");
+        break;
 
-      launchHelp();
+      case "update":
+        alert("You are running Proof Details Generator " + PDGVersion + "\rTo ensure Proof Details Generator is up-to-date, visit:\rhttp://github.com/joshmakar/proof-details-generator");
 
-      break;
+        launchHelp();
 
-    case "exit":
-      break;
+        break;
 
-    default:
-      alert("Please type a valid response or type 'exit'.");
-      launchHelp();
+      case "exit":
+        break;
+
+      default:
+        alert("Please type a valid response or type 'exit'.");
+        launchHelp();
+    }
   }
 }
 
@@ -99,9 +106,10 @@ function createSwatches(){
             rectRef.fillColor = rgbColor;
             rectRef.strokeColor = black;
             rectRef.strokeWidth = "1";
+            rectRef.strokeDashes = [];
             textRectRef =  doc.pathItems.rectangle(y- t_v_pad,x+ t_h_pad, w-(2*t_h_pad),h-(2*t_v_pad));
             textRef = doc.textFrames.areaText(textRectRef);
-            textRef.textRange.characterAttributes.size = 8;
+            textRef.textRange.characterAttributes.size = 7;
             try{
               textRef.textRange.characterAttributes.textFont=app.textFonts.getByName(myfont);
             }
@@ -212,9 +220,12 @@ function createSwatches(){
 }
 
 function outputProductionDetails(){
+    var productionType = "";
     var productionType = prompt("What is the production type? Or type /help","Screen-Print, Embroidery, Digital, Heatpress, Vinyl, or Other");
-    var productionTypeKey = productionType.toLowerCase();
-    var productionTypeKey = productionTypeKey.substring(0, 3);
+    if(productionType != null){
+      var productionTypeKey = productionType.toLowerCase();
+      var productionTypeKey = productionTypeKey.substring(0, 3);
+    }
 
     var p = 0;
     var n = true;
@@ -259,7 +270,7 @@ function outputProductionDetails(){
         whiteBox.strokeWidth = "0";
 	}
 
-	if(productionTypeKey != "/he" && productionTypeKey != "/re"){
+	if(productionTypeKey != "/he" && productionTypeKey != "/re" && productionTypeKey != "col" && productionTypeKey != null){
     try {  
         doc.layers.getByName( 'Proof Details' ).remove();  
     } catch (e) {};
@@ -268,6 +279,7 @@ function outputProductionDetails(){
 		newGroup.name = "Proof Details";
 	}
 
+  if(productionType != null){
     switch (productionTypeKey) {
         case "scr":
           	contents = "Screen-Print";
@@ -297,7 +309,7 @@ function outputProductionDetails(){
             var productHeight = prompt("What is the Product Height",'3\', 18", Etc.');
 
             contents = "Digital Printing";
-        	productionTypeBG();
+            productionTypeBG();
 
             pointTextRefMono(x, y, contents);
 
@@ -356,7 +368,7 @@ function outputProductionDetails(){
             var productHeight = prompt("What is the Product Height",'3", 18", Etc.');
 
             contents = "Cut Vinyl";
-        	productionTypeBG();
+            productionTypeBG();
 
             pointTextRefMono(x, y, contents);
 
@@ -366,9 +378,9 @@ function outputProductionDetails(){
 
         case "col":
 
-          newGroup = doc.layers.add(); //var newGroup = doc.groupItems.add();
-          newGroup.name = "Proof Details";
-          TextRef = doc.textFrames.add();
+          newGroup = doc.layers.add();
+          newGroup.name = "Colors Used";
+
           createSwatches();
 
           break;
@@ -393,6 +405,7 @@ function outputProductionDetails(){
 
             pointTextRef(x, y - (h + margin), "Product" + '\rTBD"w x TBD"h');
     }
+  }
 }
 
 outputProductionDetails();

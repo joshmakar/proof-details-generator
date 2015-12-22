@@ -1,4 +1,4 @@
-# Illustrator Proof Details Generator
+# Illustrator Proof Details Generator (V1.1)
 
 An Adobe Illustrator script that is used for generating art proof details and swatches.
 
@@ -13,13 +13,17 @@ Create your design proof then run the script and follow the prompts.
 
 ## History
 
+v1.1:
+>Cleaned up known errors.
+>All items on To-Do list completed.
+
 v1.0: Initial repository setup.
 
 ## To-do
 
-Colors command deletes Proof Details layer. Need to fix it so it doesn't.
+~~Color swatches retain attributes such as dashed lines. Reset appearance to default before applying fill/stroke~~
 
-Color swatches retain attributes such as dashed lines. Reset appearance to default before applying fill/stroke
+~~Colors command deletes Proof Details layer. Need to fix it so it doesn't.~~
 
 ~~Change all type except for the Production Type text to a sans monospaced font.~~
 
