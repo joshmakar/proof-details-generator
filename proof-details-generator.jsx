@@ -341,8 +341,6 @@ function outputProductionDetails(){
             break;
 
         case "hea":
-            var productName = prompt("What is the Product Type?","Shirts, Cinch Bags, Etc.");
-
             contents = "Heatpress";
         	productionTypeBG();
 
