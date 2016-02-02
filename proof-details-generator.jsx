@@ -318,10 +318,8 @@ function outputProductionDetails(){
             break;
 
         case "emb":
-            var productName = prompt("What is the Product Type?","Polos, Hats, Etc.");
-
             contents = "Embroidery";
-        	productionTypeBG();
+            productionTypeBG();
 
             pointTextRefMono(x, y, contents);
 
