@@ -22,6 +22,8 @@ v1.0:
 
 ## To-do
 
+Add |'s as separators for different print positions.
+
 ~~Color swatches retain attributes such as dashed lines. Reset appearance to default before applying fill/stroke~~
 
 ~~Colors command deletes Proof Details layer. Need to fix it so it doesn't.~~
