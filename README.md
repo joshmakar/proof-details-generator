@@ -1,4 +1,4 @@
-# Illustrator Proof Details Generator (V1.1)
+# Illustrator Proof Details Generator (V1.2)
 
 An Adobe Illustrator script that is used for generating art proof details and swatches.
 
@@ -12,6 +12,9 @@ Ex: C:/Program Files(x86)/Adobe/[Adobe Illustrator Folder]/Presets/en_US/Scripts
 Create your design proof then run the script and follow the prompts.
 
 ## History
+
+v1.2:
+>- Embroidery now asks for design IDs.
 
 v1.1:
 >- Cleaned up known errors.

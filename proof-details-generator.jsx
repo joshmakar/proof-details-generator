@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////
-//  Proof Details Generator V1.1 CS5
-    var PDGVersion = "V1.1";
+//  Proof Details Generator V1.2 CS5
+    var PDGVersion = "V1.2";
 //---------------------------------------------------------------
 /////////////////////////////////////////////////////////////////
 
@@ -230,6 +230,7 @@ function outputProductionDetails(){
     var p = 0;
     var n = true;
     var position = [];
+    var designID = [];
 
     var y = -640;
     var x = 30;
@@ -325,8 +326,9 @@ function outputProductionDetails(){
 
             while(p < 4 && n == true){
               position[p] = prompt("What is the Embroidery Position","Left Chest, Right Chest, Center Front, Etc.");
+              designID[p] = prompt("What is the Design ID for this Position?","");
 
-              pointTextRef(x + (w * p), y - (h + margin), toTitleCase(position[p]) + '\rTBD"w x TBD"h');
+              pointTextRef(x + (w * p), y - (h + margin), toTitleCase(position[p]) + '\rTBD"w x TBD"h\rDesign ID: ' + designID[p]);
 
               p++;
               
