@@ -328,7 +328,7 @@ function outputProductionDetails(){
               position[p] = prompt("What is the Embroidery Position","Left Chest, Right Chest, Center Front, Etc.");
               designID[p] = prompt("What is the Design ID for this Position?","");
 
-              pointTextRef(x + (w * p), y - (h + margin), toTitleCase(position[p]) + '\rTBD"w x TBD"h\rDesign ID: ' + designID[p]);
+              pointTextRef(x + (w * p), y - (h + margin), toTitleCase(position[p]) + '\rTBD"w x TBD"h\r' + (designID[p] ? 'Design ID: ' + designID[p] : ''));
 
               p++;
               
