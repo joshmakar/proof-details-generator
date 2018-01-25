@@ -4,7 +4,7 @@
 //---------------------------------------------------------------
 /////////////////////////////////////////////////////////////////
 
-//Global Variables
+// Global Variables
 doc = activeDocument;
 myfont = "DroidSans";
 myfontMono = "DroidSansMono";
