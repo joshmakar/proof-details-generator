@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////
-//  Proof Details Generator V1.2 CS5
-    var PDGVersion = "V1.2";
+//  Proof Details Generator CS5
+    var PDGVersion = "V1.2.1";
 //---------------------------------------------------------------
 /////////////////////////////////////////////////////////////////
 
@@ -38,7 +38,7 @@ function launchHelp(){
         break;
 
       case "tips":
-        alert("You only need to type the first three characters of the default Production Type, e.g. scr = Screen-Print.\r\rIf you'd like to output the swatch colors only, type 'colors'.");
+        alert("You only need to type the first three characters of the default Production Type, e.g. scr = Screen-Print.\r\rIf you'd like to output the swatch colors only, type 'colors'.\r\rTo disable title case formating, prepend your entry with a \\, e.g. \\PVC Sign.");
 
         launchHelp();
 
@@ -309,12 +309,18 @@ function outputProductionDetails(){
             var productWidth = prompt("What is the Product Width",'6\', 24", Etc.');
             var productHeight = prompt("What is the Product Height",'3\', 18", Etc.');
 
+            if (productName.charAt(0) == "\\") {
+            	productName = productName.substr(1);
+        	} else {
+            	productName = toTitleCase(productName);
+            }
+
             contents = "Digital Printing";
             productionTypeBG();
 
             pointTextRefMono(x, y, contents);
 
-            pointTextRef(x, y - (h + margin), toTitleCase(productName) + '\r' + productWidth + 'w x ' + productHeight + 'h');
+            pointTextRef(x, y - (h + margin), productName + '\r' + productWidth + 'w x ' + productHeight + 'h');
 
             break;
 
